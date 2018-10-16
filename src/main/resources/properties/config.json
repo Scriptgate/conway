@@ -1,0 +1,7 @@
+{
+    "canvasWidth" : 1280,
+    "canvasHeight" : 768,
+    "title" : "Conway",
+    "nanoSecondsPerTick" : 80000000,
+    "applicationType" : "OPENGL"
+}
