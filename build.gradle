@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://github.com/Scriptgate/scriptgate-repo/raw/master"
+    }
+}
+
+dependencies {
+    compile 'net.scriptgate.engine:engine-api:0.0.1-SNAPSHOT'
+    compile 'net.scriptgate.engine:engine-lwjgl:0.0.1-SNAPSHOT'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.assertj:assertj-core:3.6.2'
+}
