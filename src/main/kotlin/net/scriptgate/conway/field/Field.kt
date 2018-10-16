@@ -12,7 +12,7 @@ import net.scriptgate.engine.Engine.WIDTH
 
 import net.scriptgate.engine.Renderer
 
-class Field(val width: Int, val height: Int) {
+class Field(private val width: Int, private val height: Int) {
     private val cells: MutableMap<Point2D, Cell>
 
     init {
@@ -23,7 +23,7 @@ class Field(val width: Int, val height: Int) {
         cells[cell.position] = cell
     }
 
-    fun isLiveCell(x: Int, y: Int): Boolean {
+    private fun isLiveCell(x: Int, y: Int): Boolean {
         val cell = this.cells[Point2D(x, y)] ?: return false
         return cell.alive
     }
@@ -45,46 +45,19 @@ class Field(val width: Int, val height: Int) {
 
         for (x in 0 until width) {
             for (y in 0 until height) {
-                val cell = updateCell(x, y)
-                if (cell != null) {
-                    cells.add(cell)
+                if (isLiveCell(x, y) && (isCellUnderPopulated(x, y) || isCellOverPopulated(x, y))) {
+                    cells.add(Cell(x, y, false))
+                } else if (doesCellReproduce(x, y)) {
+                    cells.add(Cell(x, y, true))
                 }
             }
         }
         for (cell in cells) {
             mutate(cell)
-            //mutateNeighbours(cell);
         }
     }
 
-    private fun mutateNeighbours(cell: Cell): Int {
-        var liveCells = 0
 
-        for (xOffset in -1..1) {
-            for (yOffset in -1..1) {
-                val tx = cell.position.x + xOffset
-                val ty = cell.position.y + yOffset
-
-                if (tx == cell.position.x && ty == cell.position.y) {
-                    continue
-                }
-                if (isLiveCell(tx, ty)) {
-                    liveCells++
-                }
-            }
-        }
-
-        return liveCells
-    }
-
-    fun updateCell(x: Int, y: Int): Cell? {
-        if (isLiveCell(x, y) && (isCellUnderPopulated(x, y) || isCellOverPopulated(x, y))) {
-            return Cell(x, y, false)
-        } else if (doesCellReproduce(x, y)) {
-            return Cell(x, y, true)
-        }
-        return null
-    }
 
     private fun isCellUnderPopulated(x: Int, y: Int): Boolean {
         return getLiveNeighbours(x, y) < 2
@@ -119,8 +92,7 @@ class Field(val width: Int, val height: Int) {
     }
 
     companion object {
-
-        val TILE_SIZE = 5
+        const val TILE_SIZE = 5
     }
 
 }
