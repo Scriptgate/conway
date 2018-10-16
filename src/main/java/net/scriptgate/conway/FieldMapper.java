@@ -1,10 +1,13 @@
 package net.scriptgate.conway;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import static java.lang.Integer.toHexString;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import net.scriptgate.conway.field.Cell;
 import net.scriptgate.engine.image.BufferedImageLoader;
 
 public class FieldMapper {
@@ -16,21 +19,16 @@ public class FieldMapper {
     }
 
     public List<Cell> loadCell(String cellImagePath) {
-        List<Cell> cellChanges = new ArrayList<>();
 
         BufferedImage cellImage = imageLoader.getTexture(cellImagePath);
-
         String[] hexArray = imageLoader.imageToHexArray(cellImage);
-
         final int width = cellImage.getWidth();
 
-        for (int i = 0; i < hexArray.length; i++) {
-            if (hexArray[i].equals("000000")) {
-                cellChanges.add(new Cell(i % width, i / width, true));
-            }
-        }
+        return IntStream.range(0, hexArray.length)
+                .filter(i -> hexArray[i].equals("000000"))
+                .mapToObj(i -> Cell.createLiveCell(i % width, i / width))
+                .collect(Collectors.toList());
 
-        return cellChanges;
     }
 
 }

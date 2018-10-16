@@ -1,15 +1,15 @@
-package net.scriptgate.conway;
+package net.scriptgate.conway.field;
 
 import net.scriptgate.conway.common.Point2D;
 
 public class Cell {
 
-    public final Point2D position;
-    public final boolean value;
+    final Point2D position;
+    final boolean alive;
 
-    public Cell(int x, int y, boolean value) {
+    Cell(int x, int y, boolean alive) {
         this.position = new Point2D(x, y);
-        this.value = value;
+        this.alive = alive;
     }
 
     public static Cell createLiveCell(int x, int y) {

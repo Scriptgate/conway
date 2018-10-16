@@ -1,12 +1,18 @@
-package net.scriptgate.conway;
+package net.scriptgate.conway.field;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.scriptgate.common.Color3f;
 import net.scriptgate.conway.common.Point2D;
+
+import static net.scriptgate.common.Color3f.BLACK;
+import static net.scriptgate.common.Color3f.WHITE;
 import static net.scriptgate.engine.Engine.HEIGHT;
 import static net.scriptgate.engine.Engine.WIDTH;
+
 import net.scriptgate.engine.Renderer;
 
 public class Field {
@@ -39,59 +45,34 @@ public class Field {
         if (cell == null) {
             return false;
         }
-        return cell.value;
+        return cell.alive;
     }
 
     public void render(Renderer renderer) {
-        renderer.setColor(1, 1, 1);
+        renderer.setColor(WHITE);
         renderer.setOpacity(1f);
         renderer.fillRect(0, 0, WIDTH, HEIGHT);
-        for (Cell cell : cells.values()) {
-            if (cell.value) {
-                renderer.setColor(0, 0, 0);
-            } else {
-                renderer.setColor(0.8f, 0.8f, 0.8f);
-            }
-            renderer.fillRect(cell.position.x * TILE_SIZE, cell.position.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        }
-        /*
-         for (int x = 0; x < width; x++) {
-         for (int y = 0; y < height; y++) {
-         //renderer.setOpacity(0.5f);
-         //renderer.setColor(0, 0, 0);
-         //renderer.drawRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-         //renderer.setColor(1,1,1);
-         //renderer.drawString(x* TILE_SIZE, y* TILE_SIZE, valueOf(getLiveNeighbours(x, y)));
-         Cell cell = cells.get(new Point2D(x, y));
 
-         if (cell != null) {
-         if (cell.value) {
-         renderer.setColor(0, 0, 0);
-         } else {
-         renderer.setColor(0.8f, 0.8f, 0.8f);
-         }
+        renderer.setColor(BLACK);
+        cells.values().stream()
+                .filter(cell -> cell.alive)
+                .forEach(cell -> {
+                    renderer.fillRect(cell.position.x * TILE_SIZE, cell.position.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                });
 
-                    
-         } else {
-         renderer.setColor(0.8f, 0, 0);
-         }
-         renderer.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-         }
-         }*/
     }
 
     public void update() {
         List<Cell> cells = new ArrayList<>();
 
-        
-         for (int x = 0; x < width; x++) {
-         for (int y = 0; y < height; y++) {
-         Cell cell = updateCell(x, y);
-         if (cell != null) {
-         cells.add(cell);
-         }
-         }
-         }
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell cell = updateCell(x, y);
+                if (cell != null) {
+                    cells.add(cell);
+                }
+            }
+        }
         for (Cell cell : cells) {
             mutate(cell);
             //mutateNeighbours(cell);

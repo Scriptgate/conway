@@ -1,29 +1,37 @@
 package net.scriptgate.conway;
 
-import java.util.List;
-import static net.scriptgate.conway.Field.TILE_SIZE;
+import static net.scriptgate.conway.field.Field.TILE_SIZE;
+
+import net.scriptgate.conway.field.Cell;
+import net.scriptgate.conway.field.Field;
+import net.scriptgate.engine.Application;
+import net.scriptgate.engine.Engine;
+import net.scriptgate.engine.InputComponent;
 import net.scriptgate.engine.Renderer;
 
-public class Conway {
+public class Conway implements Application {
 
-    private final Field field;
+    private Field field;
 
-    public Conway(int width, int height) {
-        this.field = new Field(width / TILE_SIZE, height / TILE_SIZE);
-        
-        FieldMapper mapper = new FieldMapper();
-        List<Cell> cells = mapper.loadCell("glidergun");
-        for(Cell cell : cells) {
-            field.mutate(cell);
-        }
+    @Override public void initialize() {
+        int fieldWidth = Engine.WIDTH / TILE_SIZE;
+        int fieldHeight = Engine.HEIGHT / TILE_SIZE;
+
+        this.field = new Field(fieldWidth, fieldHeight);
+
+        new FieldMapper()
+                .loadCell("glidergun")
+                .forEach(cell -> field.mutate(cell));
     }
 
+    @Override
+    public void onTick(InputComponent inputComponent, double elapsedTime) {
+        field.update();
+    }
+
+    @Override
     public void render(Renderer renderer) {
         field.render(renderer);
-    }
-
-    public void update() {
-        field.update();
     }
 
 }
