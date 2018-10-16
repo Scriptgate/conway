@@ -11,16 +11,9 @@ class Point2D {
     val isZero: Boolean
         get() = this.x == 0 && this.y == 0
 
-    constructor() {}
-
     constructor(x: Int, y: Int) {
         this.x = x
         this.y = y
-    }
-
-    constructor(point: Point2D) {
-        this.x = point.x
-        this.y = point.y
     }
 
     fun add(point: Point2D): Point2D {
@@ -72,46 +65,41 @@ class Point2D {
     }
 
 
+    fun minimum(that: Point2D): Point2D {
+        return Point2D(
+                Math.min(this.x, that.x),
+                Math.min(this.y, that.y)
+        )
+    }
 
-        fun min(a: Point2D, b: Point2D): Point2D {
-            return Point2D(
-                    Math.min(a.x, b.x),
-                    Math.min(a.y, b.y)
-            )
-        }
+    fun maximum(that: Point2D): Point2D {
+        return Point2D(
+                Math.max(this.x, that.x),
+                Math.max(this.y, that.y)
+        )
+    }
 
-        fun max(a: Point2D, b: Point2D): Point2D {
-            return Point2D(
-                    Math.max(a.x, b.x),
-                    Math.max(a.y, b.y)
-            )
-        }
+    operator fun minus(that: Point2D): Point2D {
+        return Point2D(this.x - that.x, this.y - that.y)
+    }
 
-        fun sum(a: Point2D, b: Point2D): Point2D {
-            return Point2D(a.x + b.x, a.y + b.y)
-        }
+    operator fun times(that: Point2D): Int {
+        return this.x * that.y - this.y * that.x
+    }
 
-        fun difference(a: Point2D, b: Point2D): Point2D {
-            return Point2D(a.x - b.x, a.y - b.y)
-        }
+    fun normalize(point: Point2D): Point2D {
+        return Point2D(
+                compare(point.x, 0),
+                compare(point.y, 0)
+        )
+    }
 
-        fun normalize(point: Point2D): Point2D {
-            return Point2D(
-                    compare(point.x, 0),
-                    compare(point.y, 0)
-            )
-        }
+    fun distance(a: Point2D, b: Point2D): Double {
+        return sqrt(((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y)).toDouble())
+    }
 
-        fun crossProduct(a: Point2D, b: Point2D): Int {
-            return a.x * b.y - a.y * b.x
-        }
-
-        fun distance(a: Point2D, b: Point2D): Double {
-            return sqrt(((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y)).toDouble())
-        }
-
-        fun distance(x1: Int, y1: Int, x2: Int, y2: Int): Double {
-            return sqrt(((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)).toDouble())
-        }
+    fun distance(x1: Int, y1: Int, x2: Int, y2: Int): Double {
+        return sqrt(((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)).toDouble())
+    }
 
 }

@@ -1,19 +1,8 @@
 package net.scriptgate.conway.common
 
 import java.lang.Math.abs
-import java.util.ArrayList
 
-class Polygon2D {
-
-    private val points: MutableList<Point2D>
-
-    constructor() {
-        this.points = ArrayList()
-    }
-
-    constructor(points: MutableList<Point2D>) {
-        this.points = points
-    }
+class Polygon2D(private val points: MutableList<Point2D>) {
 
     fun addPoint(point: Point2D) {
         this.points.add(point)
@@ -56,13 +45,11 @@ class Polygon2D {
                 return true
             }
         }
-        return if (doLinesIntersect(
+        return doLinesIntersect(
                         other.points[other.points.size - 1],
                         other.points[0],
                         points[points.size - 1],
-                        points[0])) {
-            true
-        } else false
+                        points[0])
     }
 
     /*
@@ -91,7 +78,7 @@ class Polygon2D {
 
     companion object {
 
-        private val EPSILON = 0.000001
+        private const val EPSILON = 0.000001
 
         private fun doLinesIntersect(a1: Point2D, a2: Point2D, b1: Point2D, b2: Point2D): Boolean {
             return (doBoundingBoxesIntersect(a1, a2, b1, b2)
@@ -100,11 +87,11 @@ class Polygon2D {
         }
 
         private fun doBoundingBoxesIntersect(a1: Point2D, a2: Point2D, b1: Point2D, b2: Point2D): Boolean {
-            val minA = a1.min(a1, a2)
-            val maxA = a1.max(a1, a2)
+            val minA = a1.minimum(a2)
+            val maxA = a1.maximum(a2)
 
-            val minB = b1.min(b1, b2)
-            val maxB = b1.max(b1, b2)
+            val minB = b1.minimum(b2)
+            val maxB = b1.maximum(b2)
 
             return (minA.x <= maxB.x
                     && maxA.x >= minB.x
@@ -119,11 +106,11 @@ class Polygon2D {
         }
 
         private fun isPointOnLine(a1: Point2D, a2: Point2D, b: Point2D): Boolean {
-            return abs(a1.crossProduct(a2.difference(a2, a1), b.difference(b, a1))) < EPSILON
+            return abs((a2 - a1) * (b - a1)) < EPSILON
         }
 
         private fun isPointRightOfLine(a1: Point2D, a2: Point2D, b: Point2D): Boolean {
-            return a1.crossProduct(a2.difference(a2, a1), b.difference(b, a1)) < 0
+            return (a2 - a1) * (b - a1) < 0
         }
     }
 }
