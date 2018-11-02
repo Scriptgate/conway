@@ -7,7 +7,7 @@ class FieldMapper {
 
     private val imageLoader: BufferedImageLoader = BufferedImageLoader()
 
-    fun loadCell(cellImagePath: String): List<Cell> {
+    fun loadCells(cellImagePath: String): List<Cell> {
 
         val cellImage = imageLoader.getTexture(cellImagePath)
         val hexArray = imageLoader.imageToHexArray(cellImage)
@@ -18,5 +18,4 @@ class FieldMapper {
                 .map { i -> Cell.createLiveCell(i % width, i / width) }
 
     }
-
 }

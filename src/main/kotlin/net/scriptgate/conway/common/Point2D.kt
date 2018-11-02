@@ -1,10 +1,6 @@
 package net.scriptgate.conway.common
 
-import java.lang.Integer.compare
-import java.lang.Math.sqrt
-
 class Point2D(var x: Int, var y: Int) {
-
 
     override fun toString(): String {
         return "[$x,$y]"

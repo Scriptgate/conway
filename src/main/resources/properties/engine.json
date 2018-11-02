@@ -3,7 +3,7 @@
   "height": 768,
   "title": "Demo",
   "maximumTicksPerRun": 240,
-  "ticksPerRun": 80,
+  "ticksPerRun": 15,
   "msPerUpdate": 1000,
   "verticalSyncDisabled": true
 }

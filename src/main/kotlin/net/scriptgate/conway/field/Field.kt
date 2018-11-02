@@ -29,11 +29,11 @@ class Field(private val width: Int, private val height: Int) {
     }
 
     fun render(renderer: Renderer) {
-        renderer.setColor(WHITE)
+        renderer.setColor(BLACK)
         renderer.setOpacity(1f)
         renderer.fillRect(0, 0, WIDTH, HEIGHT)
 
-        renderer.setColor(BLACK)
+        renderer.setColor(WHITE)
         cells.values.stream()
                 .filter { cell -> cell.alive }
                 .forEach { cell -> renderer.fillRect(cell.position.x * TILE_SIZE, cell.position.y * TILE_SIZE, TILE_SIZE, TILE_SIZE) }
